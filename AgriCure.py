@@ -98,12 +98,8 @@ footer { position: fixed; bottom:0; width:100%; text-align:center; background-co
 # ------------------ Sidebar ------------------
 st.sidebar.title("🌱 Plant Disease Detection System")
 app_mode = st.sidebar.selectbox("Select Page", ["HOME", "DISEASE RECOGNITION"])
-
-try:
-    sidebar_img = Image.open("assets/sidebar.webp")
-    st.sidebar.image(sidebar_img, use_container_width=True, caption="Healthy Crops")
-except Exception:
-    st.sidebar.warning("Sidebar image not found. Please add 'assets/sidebar.webp'.")
+sidebar_img = Image.open(r"D:\Python\PlantDiseaseDetection\DALL·E 2025-01-03 09.39.38 - A vibrant and dynamic farm landscape in a 16_9 aspect ratio, with diverse healthy crops under a glowing sunset. Digital overlays display crop health a.webp")
+st.sidebar.image(sidebar_img, use_container_width=True, caption="Healthy Crops")
 
 # ------------------ Class Names ------------------
 class_name = [
