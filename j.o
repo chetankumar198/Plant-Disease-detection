@@ -1,0 +1,11 @@
+ elif option == "Scan via Webcam":
+        camera_image = st.camera_input("Capture Image")
+        if camera_image is not None:
+            img = Image.open(camera_image)
+            st.image(img, caption="Captured Image", use_column_width=True)
+            if st.button("Predict"):
+                result_index = model_predict(img)
+                if result_index is not None and result_index < len(class_name):
+                    st.success(f"Predicted class: {class_name[result_index]}")
+                else:
+                    st.error("Invalid prediction index or no prediction made.")

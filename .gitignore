@@ -7,6 +7,15 @@ __pycache__/
 *.pyo
 *.pyd
 
+venv/
+*.pyc
+__pycache__/
+*.pkl
+*.h5
+*.pt
+*.ckpt
+
+
 # Ignore IDE settings
 .vscode/
 .idea/
@@ -19,3 +28,7 @@ __pycache__/
 *.keras
 *.pkl
 *.csv
+# Ignore model files
+models/
+*.h5
+
