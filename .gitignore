@@ -1,0 +1,21 @@
+# Ignore virtual environment
+venv/
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore IDE settings
+.vscode/
+.idea/
+
+# Ignore logs
+*.log
+
+# Ignore datasets/models (optional, if too large)
+*.h5
+*.keras
+*.pkl
+*.csv
