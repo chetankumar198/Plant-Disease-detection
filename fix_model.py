@@ -1,7 +1,7 @@
 from tensorflow import keras
 
 # Load your trained model
-model = keras.models.load_model("cnnmodel.keras", compile=False)
+model = keras.models.load_model("models/cnnmodel_fixed.keras", compile=False)
 
 # Save again in both formats
 model.save("cnnmodel_fixed.keras")
