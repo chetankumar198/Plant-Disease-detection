@@ -11,12 +11,22 @@ import h5py
 from tensorflow.keras.models import load_model as tf_load_model   # ⚡ renamed
 from keras.models import load_model as keras_load_model           # ✅ added
 import tensorflow as tf
+from tensorflow.keras.layers import InputLayer   # ✅ added for fix
 import time
 import logging   # ✅ added
 
 # Suppress TF warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 tf.get_logger().setLevel(logging.ERROR)   # ✅ fixed line
+
+# ------------------ Fix for old InputLayer configs ------------------
+def inputlayer_from_config(config):
+    if "batch_shape" in config:
+        shape = config.pop("batch_shape")
+        config["batch_input_shape"] = shape
+    return InputLayer.from_config(config)
+
+custom_objects = {"InputLayer": inputlayer_from_config}
 
 # ------------------ Download & Load Model ------------------
 @st.cache_resource
@@ -40,12 +50,12 @@ def download_and_load_model(file_id, local_path="models/model.keras", max_retrie
             st.error("❌ Failed to download the model after multiple attempts.")
             return None
 
-    # Load the model directly (works for .keras format)
+    # Load the model directly (works for .keras or .h5 format)
     try:
         try:
-            model = keras_load_model(local_path)   # ✅ first try with keras
+            model = keras_load_model(local_path, custom_objects=custom_objects, compile=False)   # ✅ with fix
         except Exception:
-            model = tf_load_model(local_path)      # fallback
+            model = tf_load_model(local_path, custom_objects=custom_objects, compile=False)      # fallback
         st.success("✅ Model loaded successfully!")
         return model
     except Exception as e:
@@ -103,15 +113,12 @@ footer { position: fixed; bottom:0; width:100%; text-align:center; background-co
 """, unsafe_allow_html=True)
 
 # ------------------ Sidebar ------------------
-
-
 st.sidebar.title("🌱 Plant Disease Detection System")
 app_mode = st.sidebar.selectbox("Select Page", ["HOME", "DISEASE RECOGNITION"])
 
 # ✅ Use relative path (inside repo)
 sidebar_img = Image.open("assets/farm_sunset.webp")
-st.sidebar.image(sidebar_img, use_container_width=True, caption="Healthy Crops")
-
+st.sidebar.image(sidebar_img, caption="Healthy Crops")
 
 # ------------------ Class Names ------------------
 class_name = [
