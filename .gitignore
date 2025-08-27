@@ -7,14 +7,14 @@ __pycache__/
 *.pyo
 *.pyd
 
-venv/
-*.pyc
-__pycache__/
+# Ignore model files (except cnnmodel.keras)
 *.pkl
 *.h5
 *.pt
 *.ckpt
 
+# Keep cnnmodel.keras tracked
+!cnnmodel.keras
 
 # Ignore IDE settings
 .vscode/
@@ -24,11 +24,5 @@ __pycache__/
 *.log
 
 # Ignore datasets/models (optional, if too large)
-*.h5
-*.keras
-*.pkl
 *.csv
-# Ignore model files
 models/
-*.h5
-
