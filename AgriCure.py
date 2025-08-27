@@ -1,18 +1,22 @@
 import streamlit as st
 from tornado.websocket import WebSocketClosedError
 import numpy as np
+print(np.__version__)
 import cv2
+print(cv2.__version__)
 import os
 from PIL import Image
 import gdown
 import h5py
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model as tf_load_model   # ⚡ renamed
+from keras.models import load_model as keras_load_model           # ✅ added
 import tensorflow as tf
 import time
+import logging   # ✅ added
 
 # Suppress TF warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
+tf.get_logger().setLevel(logging.ERROR)   # ✅ fixed line
 
 # ------------------ Download & Load Model ------------------
 @st.cache_resource
@@ -38,7 +42,10 @@ def download_and_load_model(file_id, local_path="models/model.keras", max_retrie
 
     # Load the model directly (works for .keras format)
     try:
-        model = tf.keras.models.load_model(local_path)
+        try:
+            model = keras_load_model(local_path)   # ✅ first try with keras
+        except Exception:
+            model = tf_load_model(local_path)      # fallback
         st.success("✅ Model loaded successfully!")
         return model
     except Exception as e:
@@ -96,10 +103,15 @@ footer { position: fixed; bottom:0; width:100%; text-align:center; background-co
 """, unsafe_allow_html=True)
 
 # ------------------ Sidebar ------------------
+
+
 st.sidebar.title("🌱 Plant Disease Detection System")
 app_mode = st.sidebar.selectbox("Select Page", ["HOME", "DISEASE RECOGNITION"])
-sidebar_img = Image.open(r"D:\Python\PlantDiseaseDetection\DALL·E 2025-01-03 09.39.38 - A vibrant and dynamic farm landscape in a 16_9 aspect ratio, with diverse healthy crops under a glowing sunset. Digital overlays display crop health a.webp")
+
+# ✅ Use relative path (inside repo)
+sidebar_img = Image.open("assets/farm_sunset.webp")
 st.sidebar.image(sidebar_img, use_container_width=True, caption="Healthy Crops")
+
 
 # ------------------ Class Names ------------------
 class_name = [

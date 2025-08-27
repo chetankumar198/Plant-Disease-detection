@@ -1,17 +1,19 @@
+import streamlit as st
 import tensorflow as tf
 import os
 import gdown
+
+st.title("Model Loader with Streamlit")
 
 file_id = "1-UQCdlnIYo3EaqyA_urDpyGCysYXNSLS"
 output = "models/model.keras"
 os.makedirs("models", exist_ok=True)
 
-# Download the actual model file from Google Drive
-gdown.download(f"https://drive.google.com/uc?id={file_id}", output, quiet=False, fuzzy=True)
+with st.spinner("Downloading model..."):
+    gdown.download(f"https://drive.google.com/uc?id={file_id}", output, quiet=False, fuzzy=True)
 
-# Load the model with TensorFlow
 try:
     model = tf.keras.models.load_model(output)
-    print("✅ Model loaded successfully!")
+    st.success("✅ Model loaded successfully!")
 except Exception as e:
-    print("❌ Error loading model:", e)
+    st.error(f"❌ Error loading model: {e}")
