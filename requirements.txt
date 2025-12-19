@@ -1,14 +1,20 @@
-# Core dependencies
+# Core
 streamlit==1.32.2
-tensorflow==2.20.0
-rich==13.9.4
-numpy==1.25.2
-pandas==2.2.2
+tensorflow==2.15.0
+
+# ML / Image
+numpy==1.24.3
 pillow==10.2.0
 opencv-python-headless==4.8.1.78
 h5py==3.10.0
-gdown==5.1.0
 
-# Utils
-protobuf==4.25.3
+# Data
+pandas==2.2.2
+
+# Utilities
+gdown==5.1.0
 requests==2.32.3
+rich==13.9.4
+
+# Compatibility (IMPORTANT)
+protobuf==3.20.3
