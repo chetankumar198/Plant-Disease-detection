@@ -23,7 +23,8 @@ tf.get_logger().setLevel(logging.ERROR)
 def load_model():
     MODEL_PATH = "models/CNN_plantdiseases_model.keras"
 
-    FILE_ID = "YOUR_REAL_GOOGLE_DRIVE_FILE_ID"  # ✅ replace this
+    FILE_ID = "1-UQCdlnIYo3EaqyA_urDpyGCysYXNSLS"
+
 
     os.makedirs("models", exist_ok=True)
 
