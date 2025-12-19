@@ -22,17 +22,26 @@ tf.get_logger().setLevel(logging.ERROR)
 @st.cache_resource
 def load_model():
     MODEL_PATH = "models/CNN_plantdiseases_model.keras"
-
     FILE_ID = "1-UQCdlnIYo3EaqyA_urDpyGCysYXNSLS"
-
 
     os.makedirs("models", exist_ok=True)
 
-    if not os.path.exists(MODEL_PATH):
-        with st.spinner("📥 Downloading model..."):
+    # 🔁 Force re-download if file is missing or corrupted
+    if not os.path.exists(MODEL_PATH) or os.path.getsize(MODEL_PATH) < 10_000_000:
+        with st.spinner("📥 Downloading model (first run may take time)..."):
             url = f"https://drive.google.com/uc?id={FILE_ID}"
-            gdown.download(url, MODEL_PATH, quiet=False)
+            gdown.download(
+                url,
+                MODEL_PATH,
+                quiet=False,
+                fuzzy=True
+            )
 
+    # 🔍 Verify file size (must be ~300MB)
+    file_size_mb = os.path.getsize(MODEL_PATH) / (1024 * 1024)
+    st.info(f"✅ Model file size: {file_size_mb:.2f} MB")
+
+    # 🚀 Load model
     model = keras.models.load_model(MODEL_PATH, compile=False)
     return model
 
